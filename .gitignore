@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Claude Code local settings (per-user)
+.claude/settings.local.json
+
+# Node / scripts
+node_modules/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.python-version
+
+# Secrets
+.env
+.env.local
+*.key
+*.pem
+
+# Temp / work
+00-inbox/*.tmp
+.playwright-mcp/
+
+# Skill cache
+.cache/
+
+# 스킬 검증 작업물 (eval 실행 결과·fixture — 배포 대상 아님)
+.evals/

@@ -1,0 +1,1 @@
+fivetaku/insane-search@c180f48703acb3c0b50294062d27fddd59844376 v0.4.0 2026-04-25 (renamed: web-bypass)

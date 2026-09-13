@@ -1,0 +1,16 @@
+# review-analyzer 의존성
+# 매장 리뷰(naver-place-reviews.py)의 기본 경로는 아무것도 필요 없다 — 파이썬 표준 라이브러리만 쓴다.
+
+# 상품 리뷰(브랜드스토어·다나와) 크롤링 코어 (--no-login 모드는 이것만 있으면 됨)
+selenium>=4.6.0
+
+# 매장 리뷰를 20건 넘게(--deep) 받을 때만 필요:
+# playwright>=1.40      # 설치 후 `playwright install chromium` 한 번 더
+
+# --selenium(로그인) 모드를 쓸 때만 필요 (공개 리뷰엔 불필요):
+# pyperclip>=1.8.0
+# python-dotenv>=1.0.0
+
+# 구글 시트 업로드(--sheet)를 쓸 때만 필요:
+# gspread>=6.0.0
+# google-auth>=2.0.0
