@@ -8,7 +8,7 @@ created: 2026-09-02
 
 # 데이터 분석 실습 시나리오 - 슬로우베드
 
-> **선행 조건**: workspace 클론 + 환경 세팅 완료
+> **선행 조건**: 받은 워크스페이스 압축 풀기 + 환경 세팅 완료
 > **샘플 데이터**: `50-resources/sample-data/slowbed/`
 > **분석 템플릿·디자인**: `00-system/01-templates/slowbed/`
 >

@@ -132,8 +132,8 @@ DB 접근이 막힌 환경이면 화면 기반 cua 백그라운드 캡처(trycua
 - **읽기 전용 · 본인 기기의 본인 계정만.** 본인 PC에 로그인된 본인 카톡.
 - 메모리 덤프는 본인 프로세스를 **읽기만** 한다(수정·네트워크·LOCO 없음).
 - **전제**: 카톡 실행 중 + 읽고 싶은 대화방을 열어 본 적이 있어야 메모리에 올라온다.
-- procdump64.exe 필요(설치형 아님). **`sync` 첫 실행 시 Sysinternals에서 자동 다운로드**되어 `~/.config/kakao-read/`에 캐시된다(클론 사용자 수동 설치 불필요). 자동이 막히면 `https://download.sysinternals.com/files/Procdump.zip` 받아 `config.procdump_path` 지정 또는 PATH에.
-- **클론 후 첫 실행**: `python kakao_win.py doctor` 로 환경·의존성·데이터 상태를 한 번에 점검(파이썬·카톡 실행 여부·procdump·누적 저장소).
+- procdump64.exe 필요(설치형 아님). **`sync` 첫 실행 시 Sysinternals에서 자동 다운로드**되어 `~/.config/kakao-read/`에 캐시된다(받은 사용자 수동 설치 불필요). 자동이 막히면 `https://download.sysinternals.com/files/Procdump.zip` 받아 `config.procdump_path` 지정 또는 PATH에.
+- **처음 받은 뒤 첫 실행**: `python kakao_win.py doctor` 로 환경·의존성·데이터 상태를 한 번에 점검(파이썬·카톡 실행 여부·procdump·누적 저장소).
 - **Python 필요**: 윈도우는 Python이 **기본 설치돼 있지 않다.** 없으면 `winget install --id Python.Python.3.12 -e` 로 설치(관리자 권한 불필요). 패키지 설치는 없어도 된다 — 스크립트 의존성은 표준 라이브러리뿐(다운로드·DB·압축해제 모두 stdlib).
 - **WSL·네이티브 윈도우 양쪽 동작**: 스크립트가 `/mnt/c` 유무로 환경을 자동 감지해 경로를 처리한다(WSL=`/mnt/c/...`, 네이티브=`C:\...`). 네이티브에선 `python3` 대신 `python` 일 수 있음.
 
@@ -142,7 +142,7 @@ DB 접근이 막힌 환경이면 화면 기반 cua 백그라운드 캡처(trycua
 실행 전 워크스페이스 루트에서 `cd .claude/skills/kakao-read/scripts/win` 후 아래 (표준 라이브러리만, 네이티브는 `python`).
 
 ```bash
-python3 kakao_win.py doctor          # 자가진단: 환경·procdump·카톡 실행·저장소 상태 (클론 후 첫 실행)
+python3 kakao_win.py doctor          # 자가진단: 환경·procdump·카톡 실행·저장소 상태 (처음 받은 뒤 첫 실행)
 python3 kakao_win.py sync            # KakaoTalk 메모리 덤프 → 누적 저장소에 병합 (=dump, procdump 자동 다운로드)
 python3 kakao_win.py stats           # 누적 저장소 현황 (총 메시지·사용자·방·기간)
 python3 kakao_win.py recent 20       # 최근 메시지 20개 (시각|발신자|내용)

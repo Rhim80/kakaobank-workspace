@@ -1,6 +1,6 @@
 ---
 name: setup-workspace
-description: 첫 clone 후 워크스페이스 초기 설정. CLAUDE.md 프로필 작성 + Python venv 세팅 + 선택 도구(gws/git) 안내 + 첫 daily note 생성까지 한번에 진행. "워크스페이스 세팅", "초기 설정", "setup", "setup-workspace" 등을 언급하면 자동 실행.
+description: 워크스페이스를 처음 받은 뒤의 초기 설정. CLAUDE.md 프로필 작성 + Python venv 세팅 + 선택 도구(gws/git) 안내 + 첫 daily note 생성까지 한번에 진행. "워크스페이스 세팅", "초기 설정", "setup", "setup-workspace" 등을 언급하면 자동 실행.
 allowed-tools:
   - Read
   - Write
@@ -10,7 +10,7 @@ allowed-tools:
 
 # setup-workspace
 
-Do Better Workspace를 처음 clone한 사용자를 위한 초기 설정 스킬.
+워크스페이스를 처음 받은(압축을 푼) 사용자를 위한 초기 설정 스킬.
 핵심 단계: **루트 확인 → 프로필 → Python 환경 → 선택 도구 → 저장 위치 확인 → 첫 Daily Note**.
 
 ## 수행 작업
@@ -28,7 +28,7 @@ test -f CLAUDE.md && test -d 40-personal && test -d 30-knowledge/00-wiki \
 
 **1-2. 시드 파일/폴더 무결성**:
 
-각 스킬이 실제로 참조하는 시드가 살아있는지 일괄 체크. 누락된 건 경고로만 출력하고 자동 복원은 하지 않음 (clone이 불완전했거나 사용자가 실수로 지운 경우 빨리 감지).
+각 스킬이 실제로 참조하는 시드가 살아있는지 일괄 체크. 누락된 건 경고로만 출력하고 자동 복원은 하지 않음 (압축이 덜 풀렸거나 사용자가 실수로 지운 경우 빨리 감지).
 
 ```bash
 echo "=== 시드 무결성 체크 ==="
@@ -64,7 +64,7 @@ else
   printf '  - %s\n' "${missing[@]}"
   echo ""
   echo "이 상태로 진행 가능하나, 관련 스킬 실행 시 에러가 날 수 있습니다."
-  echo "clone 상태를 확인하거나 원본 레포에서 누락된 파일을 가져오세요."
+  echo "압축 파일을 다시 풀거나, 빠진 파일을 이림에게 요청하세요."
 fi
 ```
 
