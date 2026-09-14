@@ -22,8 +22,8 @@ Claude Code와 Johnny Decimal 시스템을 결합한 **실전 PKM 워크스페�
 
 ### 1. Clone
 ```bash
-git clone https://github.com/Rhim80/dbt-workspace.git
-cd dbt-workspace
+git clone https://github.com/Rhim80/kakao-workspace.git
+cd kakao-workspace
 ```
 
 ### 2. Claude Code에서 열기
