@@ -75,7 +75,7 @@ source .claude/venv.sh
 Johnny Decimal 시스템 기반.
 
 ```
-do-better-workspace/
+kakaobank-workspace/
 ├── .claude/
 │   ├── agents/        # 전용 서브에이전트
 │   └── skills/        # 프로젝트 스킬 (키워드 자동 트리거)

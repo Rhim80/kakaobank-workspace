@@ -1,6 +1,6 @@
 # Claude Code 실습 가이드
 
-> **준비물**: Claude Code 설치 완료, do-better-workspace 클론
+> **준비물**: Claude Code 설치 완료, 받은 kakaobank-workspace 압축 파일 풀기 완료
 
 ---
 
@@ -24,11 +24,12 @@
 
 ## Part 1: 환경 준비
 
-### 1-1. do-better-workspace 클론
+### 1-1. kakaobank-workspace 압축 풀기
+
+받은 `kakaobank-workspace.zip`을 풀면 `kakaobank-workspace` 폴더가 생깁니다. 터미널에서 그 폴더로 이동합니다.
 
 ```bash
-git clone https://github.com/Rhim80/dbt-workspace.git
-cd dbt-workspace
+cd kakaobank-workspace
 ```
 
 ### 1-2. Claude Code 실행

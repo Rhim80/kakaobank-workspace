@@ -1,6 +1,6 @@
 # ripple 가이드 — 한 곳 고치면 연결된 곳도 같이
 
-> **준비물**: Claude Code 설치 완료, do-better-workspace 클론 완료
+> **준비물**: Claude Code 설치 완료, 받은 kakaobank-workspace 압축 파일 풀기 완료
 > **대상**: ripple을 처음 접하는 분. 이 문서 하나로 "이게 뭔지 / 왜 쓰는지 / 어떻게 쓰는지"를 잡습니다.
 
 ---

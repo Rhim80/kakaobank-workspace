@@ -49,7 +49,7 @@ git config --global --list
 ### 3-1. 현재 폴더에서 Git 시작
 
 ```bash
-cd /path/to/do-better-workspace
+cd /path/to/kakaobank-workspace
 git init
 ```
 

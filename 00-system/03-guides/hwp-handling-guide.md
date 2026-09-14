@@ -1,6 +1,6 @@
 # 한글(HWP/HWPX) 문서 다루기 가이드
 
-> **준비물**: Claude Code 설치 완료, do-better-workspace 클론 완료
+> **준비물**: Claude Code 설치 완료, 받은 kakaobank-workspace 압축 파일 풀기 완료
 
 ---
 
