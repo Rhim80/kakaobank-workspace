@@ -21,7 +21,7 @@ mkdir -p 00-system/wiring
 bash .claude/skills/test-report/scripts/collect_env.sh > 00-system/wiring/테스트-보고.md 2>&1
 ```
 
-스크립트는 환경(OS·Claude Code 버전·node·python·gws 등) · `claude mcp list` 원문 · gws 인증 · 파이썬 가상환경 가능 여부 · 바깥 접근(anthropic·구글 로그인·npm·pypi·github 응답 코드) · 스킬 목록 · 한글 파일명 정상 여부 · 배선도 진행 상태를 찍는다. 판단은 안 한다.
+스크립트는 환경(OS·Claude Code 버전) · 연결 상태(`claude mcp list` 원문·CLI 도구·gws 인증·.mcp.json — wiring의 `check_lanes.sh`를 불러 쓴다, 두 번 적지 않는다) · 파이썬 가상환경 가능 여부 · 바깥 접근(공통 6곳 + **스킬별로 그 스킬의 코드가 실제로 부르는 호스트** — 여기서 '실패'인 호스트를 쓰는 스킬이 곧 사내에서 안 도는 스킬, 이림이 당일 뺄 것을 이 줄로 정한다) · 스킬 목록 · 한글 파일명 정상 여부 · 배선도 진행 상태를 찍는다. 판단은 안 한다.
 
 돌린 뒤 `test -s 00-system/wiring/테스트-보고.md`로 파일이 비어 있지 않은지 본다. 비어 있거나 스크립트가 에러로 끝났으면 **그 에러 원문을 파일 첫 줄에 적는다** — "스크립트가 돌지 않았다: <원문>". 빈 파일이 가면 이림은 "문제 없음"으로 읽는다. Bash 도구 자체가 막혀 스크립트를 못 돌리면, 참가자에게 터미널에서 `bash .claude/skills/test-report/scripts/collect_env.sh` 를 직접 돌려 결과를 붙여 달라고 부탁하고, 그것도 안 되면 "Bash 막힘"이라고 파일에 적는다.
 

@@ -14,17 +14,15 @@ Claude Code와 Johnny Decimal 시스템을 결합한 **실전 PKM 워크스페�
 **핵심 특징:**
 - F&B 16년 + AI 활용 전문가의 **실제 운영 시스템** 기반
 - 워크숍/교육용으로 정리된 **배포판 버전**
-- 바로 clone해서 사용 가능한 **즉시 활용형** 구조
+- 압축 파일을 풀거나 clone해서 바로 쓰는 **즉시 활용형** 구조
 - **Skills 기반** — 자연어로 호출, 키워드 자동 트리거 (구 슬래시 커맨드 방식 대체)
 - **Wiki 복리 시스템** — 지식이 쌓일수록 가치가 증가 (Karpathy LLM Wiki 아이디어)
 
 ## Quick Start
 
-### 1. Clone
-```bash
-git clone https://github.com/Rhim80/kakaobank-workspace.git
-cd kakaobank-workspace
-```
+### 1. 받은 압축 파일 풀기
+받은 `kakaobank-workspace.zip`을 풀면 `kakaobank-workspace` 폴더가 생깁니다. 그 폴더가 워크스페이스입니다.
+(저장소 접근 권한을 따로 받은 경우에만: `git clone https://github.com/Rhim80/kakaobank-workspace.git`)
 
 ### 2. Claude Code에서 열기
 VS Code 또는 터미널에서 Claude Code 실행.
