@@ -308,7 +308,7 @@ Claude Code 공식 문서의 변경 기록을 읽어, 워크스페이스 안에 
 - `hwpxskill` — lxml · python-hwpx (`python -m pip install -r .claude/skills/hwpxskill/scripts/requirements.txt`). `.hwp`를 직접 여는 건 **윈도우 + 한글 설치** 기계에서만 되고 그때 `requirements-windows.txt`(pyhwpx)를 더 깐다
 - `review-analyzer` — **상품 리뷰(브랜드스토어)만** selenium (+ Chrome 브라우저)이 필요하다. `--no-login`은 이것만 필요. **매장 리뷰(플레이스)는 의존성이 없다**(파이썬 표준 라이브러리) — `--deep`일 때만 playwright. 로그인·시트 업로드는 선택 의존(주석 참조: `scripts/requirements.txt`)
 - `naver-search` — **없음** (파이썬 표준 라이브러리만). 대신 API 키가 필요하다: NAVER API HUB(ncloud) 필수, 검색광고 API(searchad.naver.com)는 검색량·연관키워드를 쓸 때만. `scripts/.env.example`을 `.env`로 복사해 채운다 — 키는 각자 본인 계정으로 발급
-- `web-bypass` — **스킬 안에 자체 venv를 만든다.** 처음 쓰기 전 1회 `bash .claude/skills/web-bypass/scripts/install.sh` (curl_cffi·bs4·pyyaml). 멱등성이 있어 여러 번 돌려도 안전하다. 차단이 심한 사이트까지 다루려면 `--with-playwright`(~300MB), Cloudflare/DataDome 챌린지를 실제로 통과해야 하면 `--with-cloak`(~200MB)를 붙인다. venv는 `.gitignore` 대상이라 clone에는 포함되지 않는다 — 각자 설치해야 한다
+- `web-bypass` — **스킬 안에 자체 venv를 만든다.** 처음 쓰기 전 1회 `bash .claude/skills/web-bypass/scripts/install.sh` (curl_cffi·bs4·pyyaml). 멱등성이 있어 여러 번 돌려도 안전하다. 차단이 심한 사이트까지 다루려면 `--with-playwright`(~300MB), Cloudflare/DataDome 챌린지를 실제로 통과해야 하면 `--with-cloak`(~200MB)를 붙인다. venv는 `.gitignore` 대상이라 받은 압축 파일에는 포함되지 않는다 — 각자 설치해야 한다
 
 ## 설치가 필요한 스킬 (시스템 도구·플랫폼)
 
