@@ -23,13 +23,13 @@
 | 시스템 | 있을 수 있는 길 | 메모 |
 |---|---|---|
 | Google Workspace (시트·드라이브·메일) | CLI: `gws` | 관리자가 OAuth 스코프 단위로 허용·차단한다. `gws auth status`로 확인 |
-| Wiki (Confluence) | MCP (사내 서버) | 자체 호스팅이면 공식 Atlassian MCP는 안 붙는다. 사내에 띄운 MCP 서버 이름을 `claude mcp list`에서 찾는다 |
+| Wiki (Confluence) | MCP (사내 서버) | 자체 호스팅이면 공식 Atlassian MCP는 안 붙는다. 사내에 띄운 MCP 서버 이름을 `check_lanes` 출력(`claude mcp list`와 「이 폴더에서는 안 켜지는 MCP」 절 둘 다)에서 찾는다 |
 | Atlassian (Jira) | MCP (사내 서버) | 위와 같은 구조 |
 | GitLab | MCP | 공식 MCP 서버 있음(자체 호스팅은 18.7 이상 + 유료 등급) |
 | Figma | MCP | 데스크톱 로컬판(`127.0.0.1:3845`)은 PC 안에서 통신이 끝난다 |
 | Mattermost (메신저) | MCP 또는 REST | 커뮤니티 MCP 서버 여럿. 응답에 적힌 "코코"가 이것인지는 본인에게 묻는다 |
 | Apps Script | CLI: `clasp` | 로컬에서 코드를 쓰고 올리는 구조 |
 | Agit (사내 게시판) | 확인 안 됨 | 공개 API 없음. 없으면 "직접 넣기" |
-| Start카뱅 (그룹웨어) · BI포털 · Second Brain (LLM wiki) | 확인 안 됨 | 카카오뱅크 자체 시스템. `claude mcp list`에 있으면 MCP, 없으면 "직접 넣기" |
+| Start카뱅 (그룹웨어) · BI포털 · Second Brain (LLM wiki) | 확인 안 됨 | 카카오뱅크 자체 시스템. `claude mcp list`에 `✔ Connected`면 MCP. 거기 없어도 「이 폴더에서는 안 켜지는 MCP」 절에 있으면 다시 등록할지 본인에게 묻는다. 둘 다 없으면 "직접 넣기" |
 
 응답에 자주 나온 채널 중 11종 밖의 것: 메일 · 회의(구두) · 모바일 앱 동작 확인 · 엑셀 · 한글 · 외부 웹사이트. 회의·구두는 도구가 아니라 사람 채널이다 — 길은 "직접 넣기"(회의록·메모를 원본함에)이고, 그렇게 적는다.
