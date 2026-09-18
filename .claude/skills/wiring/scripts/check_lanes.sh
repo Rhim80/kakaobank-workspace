@@ -3,6 +3,7 @@
 # 0건과 "안 돌았다"를 구분하기 위해 각 검사는 실행 여부를 함께 찍는다.
 # test-report/scripts/collect_env.sh 도 이 파일을 불러 쓴다 — 연결 상태는 여기 한 곳에만 적는다.
 set -u
+. "$(dirname "$0")/pick_python.sh"
 echo "## claude mcp list"
 if command -v claude >/dev/null 2>&1; then
   TO=""; command -v timeout >/dev/null 2>&1 && TO="timeout 90"
@@ -16,9 +17,10 @@ else
 fi
 echo
 echo "## CLI 도구"
-for t in gws clasp gh glab jq curl git python3 node npm npx; do
+for t in gws clasp gh glab jq curl git node npm npx; do
   if p=$(command -v "$t" 2>/dev/null); then v=$("$t" --version 2>&1 | head -1); echo "- $t: 있음 ($p · $v)"; else echo "- $t: 없음"; fi
 done
+if [ -n "$PY" ]; then echo "- 파이썬: 있음 ($PY · $PY_VER)"; else echo "- 파이썬: 없음 (python3·python·py 중 실행되는 것이 없다 — 윈도우의 Store 가짜 python3는 있어도 안 도는 것으로 친다)"; fi
 echo
 echo "## gws 인증 (구글 시트·드라이브·메일)"
 if command -v gws >/dev/null 2>&1; then
@@ -35,8 +37,8 @@ echo "## 이 폴더에서는 안 켜지는 MCP (다른 폴더·다른 도구에 
 # claude mcp list 는 '모든 폴더 공통(user)' + '이 폴더' 등록만 보여준다.
 # 다른 폴더에서 claude mcp add 로 등록한 것(기본값 local)과 오픈코드 설정의 MCP는 위 목록에 안 나온다.
 # 이름과 등록 위치만 찍는다 — 토큰이 들어 있을 수 있는 env·headers 값은 찍지 않는다.
-if command -v python3 >/dev/null 2>&1; then
-python3 - <<'PY'
+if [ -n "$PY" ]; then
+"$PY" - <<'PY'
 import json, os, re
 cwd = os.path.realpath(os.getcwd())
 home = os.path.expanduser("~")
@@ -92,5 +94,5 @@ else:
     print("→ 위 MCP는 이 워크스페이스 폴더의 Claude Code에서는 안 켜져 있다. 쓰려면 이 폴더에서 다시 등록하거나 '모든 폴더 공통'(claude mcp add -s user)으로 등록한다.")
 PY
 else
-  echo "(python3 없음 — 이 검사는 돌지 않았다)"
+  echo "(실행되는 파이썬 없음 — 이 검사는 돌지 않았다. 다른 폴더·오픈코드에 등록된 MCP가 있어도 여기엔 안 나온다)"
 fi
