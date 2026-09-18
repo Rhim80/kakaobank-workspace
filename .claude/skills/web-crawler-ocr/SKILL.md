@@ -1,6 +1,6 @@
 ---
 name: web-crawler-ocr
-description: 웹페이지 크롤링 + 이미지 Gemini OCR(Claude 5MB 제한을 20MB로 우회)을 마크다운 파일로 저장하는 아카이빙 파이프라인. "이 URL 워크스페이스에 저장", "아카이빙", "이미지 OCR" 등 저장/OCR 의도가 명시될 때만 실행 — URL 제공만으로는 실행하지 않음. 단순 요약은 WebFetch, 차단된 URL은 web-bypass, 네이버 리뷰는 review-analyzer 사용.
+description: 웹페이지 크롤링 + 이미지 Gemini OCR(Claude 5MB 제한을 20MB로 우회)을 마크다운 파일로 저장하는 아카이빙 파이프라인. "이 URL 워크스페이스에 저장", "아카이빙", "이미지 OCR" 등 저장/OCR 의도가 명시될 때만 실행 — URL 제공만으로는 실행하지 않음. 단순 요약은 WebFetch, 네이버 리뷰는 review-analyzer 사용.
 context: fork
 background: false
 allowed-tools:
