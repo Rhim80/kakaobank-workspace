@@ -25,7 +25,6 @@ This skill activates only when the user explicitly indicates **save/archive/OCR 
 This skill does NOT activate on:
 - URL alone without save intent → use WebFetch for inline summary
 - "crawl/analyze this URL" without save target → use WebFetch
-- 403·차단·JS-required로 WebFetch가 실패한 URL → use `web-bypass`
 - 네이버 브랜드스토어 리뷰 → use `review-analyzer`
 - 단일 URL 대화 중 확인 → use WebFetch
 

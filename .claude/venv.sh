@@ -2,7 +2,6 @@
 #
 # 쓰는 법 (워크스페이스 루트에서):
 #   source .claude/venv.sh                                          # 기본 .venv
-#   source .claude/venv.sh .claude/skills/web-bypass/scripts/venv    # 스킬 자체 venv
 #
 # 활성화 뒤에는 `python3`가 아니라 **`python`**을 쓴다.
 # 윈도우 가상환경에는 python3 라는 이름이 없다 (python.exe만 있다).
