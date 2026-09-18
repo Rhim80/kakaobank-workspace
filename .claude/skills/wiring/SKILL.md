@@ -43,6 +43,8 @@ bash .claude/skills/wiring/scripts/check_lanes.sh
 
 근거 칸에는 출력의 그 줄을 **그대로 붙인다** — 출력에 없는 것을 연결됐다고 적지 않는다(1회차 테스트에서 출력에 없는 "Figma 데스크톱 연결"이 표에 올라갔다). `Needs authentication`·`Pending approval`은 MCP가 아니다. 지금 인증을 마칠지 오늘은 직접 넣기로 갈지 본인이 정한다. 연결 0개도 정상이다 — 모든 길이 직접 넣기인 배선도가 그려진다.
 
+**「이 폴더에서는 안 켜지는 MCP」 절을 꼭 본다.** `claude mcp list`는 모든 폴더 공통 등록과 이 폴더 등록만 보여준다. 평소 쓰던 다른 폴더에서 등록했거나(`claude mcp add`의 기본값) 오픈코드에만 등록한 MCP는 거기 안 나온다 — 사내 MCP를 다 연결해 둔 PC에서도 목록이 0개로 나올 수 있다. 그 절에 이름이 있으면 "연결이 없다"로 적지 않는다. 본인에게 보여주고, 이 폴더에서 쓸 수 있게 다시 등록할지(`claude mcp add -s user …` 또는 이 폴더에서 `claude mcp add …`) 오늘은 직접 넣기로 갈지 본인이 정한다. 다시 등록했으면 스크립트를 다시 돌려 `✔ Connected`를 근거로 적는다.
+
 본인이 말한 이름이 `references/lanes.md`의 미리 조사 표와 다르면(예: "코코"와 Mattermost) 같은 것인지 그 자리에서 묻는다. 같다고 하면 표의 길 후보를 함께 본다.
 
 `assets/wiring-template.md`를 `00-system/wiring/배선도.md`로 복사하고 1절 표를 채운다. 머리말 `길확인 [x]`.

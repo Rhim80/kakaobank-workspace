@@ -30,3 +30,67 @@ fi
 echo
 echo "## 프로젝트 .mcp.json"
 if [ -f .mcp.json ]; then sed 's/^/    /' .mcp.json; else echo "(없음)"; fi
+echo
+echo "## 이 폴더에서는 안 켜지는 MCP (다른 폴더·다른 도구에 등록된 것)"
+# claude mcp list 는 '모든 폴더 공통(user)' + '이 폴더' 등록만 보여준다.
+# 다른 폴더에서 claude mcp add 로 등록한 것(기본값 local)과 오픈코드 설정의 MCP는 위 목록에 안 나온다.
+# 이름과 등록 위치만 찍는다 — 토큰이 들어 있을 수 있는 env·headers 값은 찍지 않는다.
+if command -v python3 >/dev/null 2>&1; then
+python3 - <<'PY'
+import json, os, re
+cwd = os.path.realpath(os.getcwd())
+home = os.path.expanduser("~")
+found = 0
+errors = 0
+def load(path):
+    with open(path, encoding="utf-8") as f:
+        t = f.read()
+    if path.endswith(".jsonc"):
+        t = re.sub(r'(?m)^\s*//.*$', '', t)
+    return json.loads(t)
+# 1) Claude Code: 다른 폴더에만 등록된 MCP (~/.claude.json 의 projects)
+p = os.path.join(home, ".claude.json")
+if os.path.isfile(p):
+    try:
+        d = load(p)
+        for proj, v in (d.get("projects") or {}).items():
+            names = list(((v or {}).get("mcpServers") or {}).keys())
+            if not names:
+                continue
+            if os.path.realpath(proj) == cwd:
+                continue  # 이 폴더 등록분은 claude mcp list 에 이미 나온다
+            print(f"- [Claude Code · 다른 폴더] {proj}: {', '.join(names)}")
+            found += 1
+    except Exception as e:
+        errors += 1
+        print(f"(~/.claude.json 을 읽지 못했다: {e} — 이 검사는 돌지 않았다)")
+else:
+    print("(~/.claude.json 없음 — Claude Code 다른 폴더 등록 검사는 대상 없음)")
+# 2) 오픈코드 설정
+cands = [os.path.join(home, ".config", "opencode", n) for n in ("opencode.json", "opencode.jsonc", "config.json")]
+cands += [os.path.join(cwd, n) for n in ("opencode.json", "opencode.jsonc")]
+seen = False
+for c in cands:
+    if not os.path.isfile(c):
+        continue
+    seen = True
+    try:
+        names = list((load(c).get("mcp") or {}).keys())
+        if names:
+            print(f"- [오픈코드] {c}: {', '.join(names)}")
+            found += 1
+    except Exception as e:
+        errors += 1
+        print(f"({c} 을 읽지 못했다: {e} — 이 파일은 확인 안 됨)")
+if not seen:
+    print("(오픈코드 설정 파일 없음)")
+if found == 0 and errors:
+    print("(읽은 곳에서는 0개 — 위에서 못 읽은 파일이 있어 0개라고 판정할 수 없다)")
+elif found == 0:
+    print("(다른 폴더·오픈코드에 등록된 MCP 0개)")
+else:
+    print("→ 위 MCP는 이 워크스페이스 폴더의 Claude Code에서는 안 켜져 있다. 쓰려면 이 폴더에서 다시 등록하거나 '모든 폴더 공통'(claude mcp add -s user)으로 등록한다.")
+PY
+else
+  echo "(python3 없음 — 이 검사는 돌지 않았다)"
+fi
