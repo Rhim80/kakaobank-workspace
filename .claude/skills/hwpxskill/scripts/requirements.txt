@@ -1,5 +1,0 @@
-# hwpxskill 실행에 필요한 패키지
-# lxml        — analyze_template.py · build_hwpx.py · page_guard.py · validate.py · office/unpack.py (5곳)
-# python-hwpx — text_extract.py · create_document.py (2곳, `from hwpx import ...`)
-lxml>=5.0
-python-hwpx>=6.3.0

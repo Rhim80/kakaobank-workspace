@@ -39,7 +39,7 @@ test -f 00-system/01-templates/daily-note-template.md   || missing+=("00-system/
 test -f 00-system/01-templates/weekly-review-template.md || missing+=("00-system/01-templates/weekly-review-template.md")
 test -f 00-system/01-templates/progress-template.md     || missing+=("00-system/01-templates/progress-template.md")
 
-# Personal 디렉토리 (daily/weekly/idea 스킬 저장 경로)
+# Personal 디렉토리 (daily/weekly 스킬 등 저장 경로)
 test -d 40-personal/41-daily    || missing+=("40-personal/41-daily/")
 test -d 40-personal/42-weekly   || missing+=("40-personal/42-weekly/")
 test -d 40-personal/43-ideas    || missing+=("40-personal/43-ideas/")
