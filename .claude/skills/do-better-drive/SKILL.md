@@ -67,7 +67,7 @@ description: 프로젝트 하나를 "목적 → 완료"까지 7단계로 하나�
 
 ## 공유 상태 — 표준 progress.md 형식 (모든 단계의 단일 출처)
 
-프로젝트는 `10-projects/<프로젝트>/progress.md` 하나로 진행을 기록한다 (폴더 번호는 워크스페이스 Johnny Decimal 규칙). 표준 형식:
+프로젝트는 `10-projects/<번호>-<프로젝트>/progress.md` 하나로 진행을 기록한다. 폴더는 직접 만들지 않고 `bash .claude/scripts/new_folder.sh 10-projects "<프로젝트>"`로 만든다 — 번호는 스크립트가 센다(CLAUDE.md 「어디에 저장하나」). 표준 형식:
 
 ```markdown
 ---
