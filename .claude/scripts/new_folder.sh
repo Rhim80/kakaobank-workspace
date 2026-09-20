@@ -9,7 +9,7 @@ set -u
 parent="${1:-}"; name="${2:-}"; want_progress="${3:-}"
 [ -z "$parent" ] || [ -z "$name" ] && { echo "쓰는 법: new_folder.sh <상위폴더> <이름> [progress]"; exit 1; }
 [ -d "$parent" ] || { echo "상위 폴더가 없다: $parent"; exit 1; }
-name="${name// /-}"
+name="${name// /-}"; name="${name//[\/&]/-}"
 base=$(basename "$parent")
 if [[ "$base" =~ ^([0-9])0-[^/]+$ ]]; then
   # 영역 폴더(10-projects 등): 자식은 두 자리 번호, 영역 첫 자리+1 부터
@@ -39,7 +39,7 @@ if [ "$want_progress" = "progress" ]; then
     # 킷 템플릿을 그대로 쓴다 — 형식의 원본은 템플릿 하나(ripple도 같은 파일을 쓴다)
     sed -e "s/\[프로젝트명\]/$name/" -e "s/YYYY-MM-DD/$today/g" "$tpl" > "$dir/progress.md"
   else
-    echo "(템플릿 $tpl 이 없어 progress.md를 만들지 않았다 — 폴더만 만들었다)"
+    echo "템플릿 $tpl 이 없어 progress.md를 못 만들었다 (폴더 $dir 는 만들어졌다)"; exit 1
   fi
 fi
 echo "$dir"
