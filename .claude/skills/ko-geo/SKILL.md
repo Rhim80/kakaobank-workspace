@@ -19,6 +19,13 @@ description: >
   - "GEO 검증", "변환 효과 측정", "before/after 인용률 비교"
 ---
 
+> **⚠ 2026-09-20 — 이 논문의 수치를 그대로 믿지 않는다.**
+> KDD 2024 원 논문의 향상률(+40% 등)은 **논문 자체 시뮬레이터 벤치마크(GEO-bench)** 에서 잰 값이고, 상용 생성엔진에서는 재현되지 않았다 — C-SEO Bench(Puerto et al., NeurIPS 2025, arXiv:2506.11097)가 54개 방법×도메인 조합 중 **3개만 유의미**(QA 태스크 0개)라고 보고했다. 9개 전략 중 일관되게 재확인된 것은 **키워드 스터핑 역효과(M9)** 하나이고, **M8 권위적 어조는 2026년 재평가에서 "약하고 불안정"** 으로 내려갔다. 구글도 2026-05-15 공식 가이드에서 "GEO 전용 기법은 랭킹 요인이 아니다"라고 명시했다.
+> **그래서 이 스킬의 모듈별 점수·향상률은 "우선순위를 매기는 눈금"으로만 쓰고, 기대 효과로 인용하지 않는다.** 효과 판정은 `geo_monitor` 실측으로만 한다.
+> 기법보다 앞서는 기반: **AI 크롤러는 자바스크립트를 실행하지 않는다**(GPTBot·ClaudeBot·PerplexityBot, Vercel·MERJ 5억+ 요청 실측; 예외는 Google-Extended). 본문이 JS로 그려지면 이 스킬의 변환이 무의미하다.
+> 전체 근거·출처·판정 못 한 범위는 `pkm/30-knowledge/33-articles/2026-09-20_AI시대-콘텐츠전략-종합조사.md`가 원본이다 — 수치를 여기 다시 적지 않는다.
+
+
 # KoGEO — Korean Generative Engine Optimization
 
 Princeton/IIT KDD 2024 "GEO: Generative Engine Optimization" 논문 기반 한국어 콘텐츠 자동 최적화 스킬.

@@ -3,7 +3,7 @@
 # 쓰는 법:  bash .claude/scripts/new_folder.sh <상위폴더> <이름> [progress]
 #   10-projects 아래     → 11-이름, 12-이름 …  (영역 10 → 항목 11부터)
 #   10-projects/11-x 아래 → 11.01-이름, 11.02-이름 …
-#   세 번째 인자 progress 를 주면 안에 progress.md 머리말도 만든다.
+#   세 번째 인자 progress 를 주면 00-system/01-templates/progress-template.md 를 복사해 progress.md 를 만든다.
 # 만든 경로를 마지막 줄에 찍는다. 실패하면 종료 코드 1 + 이유.
 set -u
 parent="${1:-}"; name="${2:-}"; want_progress="${3:-}"
@@ -34,22 +34,12 @@ dir="$parent/$prefix-$name"
 mkdir -p "$dir" || exit 1
 if [ "$want_progress" = "progress" ]; then
   today=$(date +%Y-%m-%d)
-  cat > "$dir/progress.md" <<MD
----
-type: progress
-initiative: $name
-status: 시작
-updated: $today
----
-
-# $name — 진행
-
-## 지금 상태
-
-## 다음 한 걸음
-
-## 로그
-- $today 폴더 만듦
-MD
+  tpl="00-system/01-templates/progress-template.md"
+  if [ -f "$tpl" ]; then
+    # 킷 템플릿을 그대로 쓴다 — 형식의 원본은 템플릿 하나(ripple도 같은 파일을 쓴다)
+    sed -e "s/\[프로젝트명\]/$name/" -e "s/YYYY-MM-DD/$today/g" "$tpl" > "$dir/progress.md"
+  else
+    echo "(템플릿 $tpl 이 없어 progress.md를 만들지 않았다 — 폴더만 만들었다)"
+  fi
 fi
 echo "$dir"
