@@ -55,4 +55,11 @@ echo "- 위치: $(pwd)"
 echo "- 스킬 수: $(ls -d .claude/skills/*/ 2>/dev/null | wc -l | tr -d ' ')"
 echo "- 스킬 목록: $(ls -d .claude/skills/*/ 2>/dev/null | xargs -n1 basename | tr '\n' ' ')"
 if [ -f "00-system/01-templates/kakaobank/일일-금리-마감실적-체크.md" ]; then echo "- 한글 파일명: 정상 (압축이 깨지지 않고 풀렸다)"; else echo "- 한글 파일명: 깨짐 또는 없음 — 00-system/01-templates/kakaobank/ 안 파일 이름을 아래에 붙인다"; ls 00-system/01-templates/kakaobank/ 2>&1 | sed 's/^/    /'; fi
-echo "- 배선도 파일: $( [ -f 00-system/wiring/배선도.md ] && sed -n 's/^진행: //p' 00-system/wiring/배선도.md || echo '없음(배선도 그리기 전)')"
+echo "## YAML 배선 검사"
+if [ -f 00-system/wiring/선언.yaml ]; then
+  bash .claude/skills/wiring/scripts/wiring.sh validate
+  rc=$?
+  [ "$rc" -eq 0 ] || echo "(배선 검사 실패 — 종료 코드 $rc. 정상으로 판정하지 않는다)"
+else
+  echo "(선언.yaml 없음 — 배선도 그리기 전. 배선 검사는 돌지 않았다)"
+fi

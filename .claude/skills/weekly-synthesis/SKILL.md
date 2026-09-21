@@ -11,33 +11,23 @@ allowed-tools:
 
 # weekly-synthesis
 
-이번 주 작업과 사고를 종합하여 `./40-personal/42-weekly/YYYY-WXX.md`에 저장.
+이번 주 작업과 사고를 종합해 선언의 주간 파일에 저장한다.
+
+워크스페이스 루트의 `00-system/선언-표면.yaml`이 경로·형식의 원본이다. 아래 래퍼가 실행 가능한 Python 3.9 이상을 확인한다. YAML 모듈은 킷에 동봉되어 있어 패키지 설치는 없다. 선언 오류·실행 실패를 빈 목록으로 숨기지 않는다.
 
 ## 분석 프로세스
 
-### 1. 이번 주 범위 파악
+### 1. 날짜와 경로
 
 ```bash
-# 이번 주 시작 (월요일) 계산
-if [ "$(uname)" = "Darwin" ]; then
-  WEEK_START=$(date -v-Mon +%Y-%m-%d 2>/dev/null || date -v-monday +%Y-%m-%d)
-else
-  WEEK_START=$(date -d "monday this week" +%Y-%m-%d)
-fi
-
-WEEK_NUM=$(date +%Y-W%V)
+bash .claude/scripts/surfaces.sh resolve
 ```
 
-### 2. 이번 주 활동 수집
+반환된 주간시작~주간끝과 주간파일을 사용한다. ISO 주차 연도를 쓰므로 연말·연초에도 파일명이 맞는다.
 
-**Daily notes**: `./40-personal/41-daily/` 하위에서 이번 주에 해당하는 파일들
+### 2. 활동 수집
 
-**Git 변경 (git repo인 경우)**:
-```bash
-git log --since="$WEEK_START" --name-only --pretty=format: | sort -u | grep -v '^$'
-```
-
-**활성 프로젝트**: `10-projects/` 에서 이번 주에 수정된 폴더
+선언의 하루 위치에서 해당 주의 노트를 읽고, git 저장소면 그 기간 log와 미커밋 status/diff를 함께 본다. 선언의 진행 루트와 배선도 줄기 기록에서 프로젝트·반복 운영 업무를 함께 읽는다. 원문에 없는 사고·감정·성과는 추정해서 채우지 않는다.
 
 ### 3. 패턴 식별
 
@@ -123,14 +113,13 @@ tags: [weekly]
 
 ## 저장 경로
 
-`./40-personal/42-weekly/{WEEK_NUM}.md`
-예: `./40-personal/42-weekly/2026-W17.md`
+resolve가 반환한 `주간파일`. 기존 파일은 읽고 변경분만 반영한다.
 
 ## 후속 행동
 
 분석 후 사용자에게 제안:
 - 완료된 프로젝트가 있으면 → "90-archive로 이동할까요?"
-- Inbox 항목 많으면 → "00-inbox 폴더를 지금 함께 정리할까요?" (해당 폴더를 직접 훑어서 10-projects / 30-knowledge / 43-ideas / 90-archive로 재배치)
+- Inbox 항목 많으면 → "00-inbox 폴더를 지금 함께 정리할까요?" (일반 자료만 대상으로 하며 배선도에 등록된 원본함 자료는 이동·수정하지 않는다)
 - 00-wiki에 승격할 인사이트가 있으면 → "wiki-ingest로 저장할까요?"
 
 ## 원칙

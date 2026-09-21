@@ -11,14 +11,16 @@ allowed-tools:
   - Edit
   - AskUserQuestion
 ---
+먼저 `00-system/선언-표면.yaml`을 Read하고 `위키.위치`를 워크스페이스 상대 경로 `WIKI_PATH`로 사용한다. 선언이 없거나 경로가 범위 밖이면 중단한다. 옛 기본 경로로 대신 실행하지 않는다. 아래 셸 예시는 그 값을 안전하게 인용해 WIKI_PATH에 지정한 뒤 실행한다. 위키를 옮겼다면 SCHEMA·index·log와 기존 출처/링크도 함께 대조한다.
+
 
 # Wiki Lint
 
-`./30-knowledge/00-wiki/` 토픽 페이지의 헬스체크.
+`선언의 위키 위치` 토픽 페이지의 헬스체크.
 
 ## 기계 검사 실행
 
-먼저 대상 워크스페이스의 `CLAUDE.md`와 `30-knowledge/00-wiki/SCHEMA.md`를 읽는다. 대상 루트에서 다음을 실행한다(Mac·Linux·Windows Git Bash). 추가 패키지나 venv는 필요 없다.
+먼저 대상 워크스페이스의 `CLAUDE.md`와 `위키.위치/SCHEMA.md`를 읽는다. 대상 루트에서 다음을 실행한다(Mac·Linux·Windows Git Bash). 추가 패키지나 venv는 필요 없다.
 
 ```bash
 WIKI_PY=""
@@ -28,7 +30,7 @@ done
 if [ -z "$WIKI_PY" ]; then
   echo "Python 3.9 이상이 필요합니다. setup-workspace의 Python 설치 안내를 따르세요."
 else
-  "$WIKI_PY" .claude/skills/wiki-lint/scripts/wiki_check.py --root "$PWD" --json
+  "$WIKI_PY" .claude/skills/wiki-lint/scripts/wiki_check.py --root "$PWD" --wiki-dir "$WIKI_PATH" --json
 fi
 ```
 
@@ -43,7 +45,7 @@ fi
 위 명령으로 전체 검사를 실행하고 출력의 root·scope·files_read와 오류/경고를 기록한다. 아래 A~M 중 기계로 잡히는 항목은 출력에서 가져오고, 의미·역방향 링크·허브·log는 원문을 읽어 별도로 판단한다.
 
 ```
-WIKI_PATH = ./30-knowledge/00-wiki
+WIKI_PATH = 00-system/선언-표면.yaml의 위키.위치
 ```
 
 - Glob: `$WIKI_PATH/*.md` (SCHEMA.md, README.md, index.md, log.md 제외)

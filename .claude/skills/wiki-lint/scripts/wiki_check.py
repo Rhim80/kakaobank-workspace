@@ -97,10 +97,11 @@ def render_index(text, pages):
                     del cells[4]; lines[i+1] = '|'.join(cells)+'\n'
     return ''.join(lines)
 
-def check(root, selected=None, today=None):
+def check(root, selected=None, today=None, wiki_dir='30-knowledge/00-wiki'):
     today = today or date.today()
     root = Path(root).resolve()
-    wiki = root / '30-knowledge/00-wiki'
+    wiki = (root / wiki_dir).resolve()
+    wiki.relative_to(root)  # Reject paths and symlinks outside the workspace.
     if not (root/'CLAUDE.md').is_file() or not (wiki/'SCHEMA.md').is_file():
         raise ValueError('워크스페이스 루트의 CLAUDE.md와 위키 SCHEMA.md가 필요합니다')
     wanted = None
@@ -209,10 +210,11 @@ def check(root, selected=None, today=None):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[4], help='워크스페이스 루트 (기본: 이 스크립트가 설치된 워크스페이스)')
+    p.add_argument('--wiki-dir', default='30-knowledge/00-wiki', help='표면 선언의 위키 상대 경로')
     p.add_argument('--files',nargs='+'); p.add_argument('--json',action='store_true'); p.add_argument('--index',action='store_true',help='본문 날짜를 반영한 index를 stdout으로 출력 (쓰기 없음)')
     args=p.parse_args()
     if args.index and args.files: p.error('--index와 --files는 함께 사용하지 않습니다')
-    try: result,idx,pages=check(args.root,args.files)
+    try: result,idx,pages=check(args.root,args.files,wiki_dir=args.wiki_dir)
     except (OSError,ValueError,KeyError) as e: p.exit(2,f'검사 실패: {e}\n')
     if args.index: print(render_index(idx,pages),end=''); return 0
     if args.json: print(json.dumps(result,ensure_ascii=False,indent=2))

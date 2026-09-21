@@ -17,11 +17,13 @@ allowed-tools:
 
 ### 1. 워크스페이스 루트 + 시드 무결성 확인
 
+이미 개인화한 워크스페이스는 아래 배포 기본값 시드 검사 대신 `00-system/선언-표면.yaml`을 읽고 그 경로의 파일을 검사한다. Python 준비 후 `bash .claude/scripts/surfaces.sh resolve`와 `bash .claude/scripts/surfaces.sh todo validate`를 실행한다. 선언의 위치에 파일이 있는데 기본 위치가 비었다는 이유로 시드를 다시 만들지 않는다.
+
 **1-1. 루트 여부**:
 
 ```bash
-test -f CLAUDE.md && test -d 40-personal && test -d 30-knowledge/00-wiki \
-  || { echo "ERROR: 워크스페이스 루트에서 실행하세요 (CLAUDE.md·40-personal·30-knowledge 없음)"; exit 1; }
+test -f CLAUDE.md && test -f 00-system/선언-표면.yaml \
+  || { echo "ERROR: 워크스페이스 루트에서 실행하세요 (CLAUDE.md·표면 선언 없음)"; exit 1; }
 ```
 
 루트가 아니면 종료.
@@ -120,7 +122,7 @@ _작성일: YYYY-MM-DD_
 
 위키 점검은 `.claude/skills/wiki-lint/SKILL.md`의 실행 절차로 확인한다. Python 3.9 이상·표준 라이브러리만 필요하며 위키만 쓸 때 패키지를 설치하지 않는다.
 
-**왜 필요한가**: `kakao-read`(윈도우)와 `wiring`의 검사 스크립트가 파이썬을 부른다. 둘 다 표준 라이브러리만 쓰므로 **가상환경(venv)이나 패키지 설치는 하지 않는다** — 파이썬 3이 실행되는지만 본다.
+**왜 필요한가**: `kakao-read`(윈도우)와 `wiring`의 검사 스크립트가 파이썬을 부른다. 둘 다 **패키지 설치 없이** 돈다 — 카톡·연결 검사는 표준 라이브러리, YAML 배선은 스킬 안에 동봉한 순수 파이썬 PyYAML을 쓴다(Python 3.9 이상). 가상환경(venv)이나 pip 설치는 하지 않는다.
 
 **4-1. Python 설치 확인**:
 
@@ -179,10 +181,10 @@ esac
 **git**: 현재 워크스페이스가 git repo면 daily-review / weekly-synthesis가 변경사항을 분석해줍니다.
   - 세팅: `git init` 후 첫 커밋
 
-**gws (Google Workspace CLI)**: daily-note가 오늘의 Google Calendar 일정을 자동으로 가져와줍니다.
+**gws (Google Workspace CLI)**: `하루.캘린더조회`를 사용자가 true로 켰을 때 daily-note가 오늘의 Google Calendar 일정을 가져옵니다.
   - 설치: `npm install -g gws-cli` (교육 과정에서 별도 안내)
   - 인증: `gws auth login` (브라우저 OAuth)
-  - 없어도 daily-note는 정상 동작하며 일정 섹션만 비어있음
+  - 기본값은 조회 꺼짐. 켠 뒤 인증·조회에 실패하면 실패로 알리고, 0건으로 처리하지 않음
 
 **kakao-read (Mac·윈도우 둘 다 됩니다 — 읽는 방식이 다릅니다)**
 
@@ -210,7 +212,7 @@ if git remote get-url origin &>/dev/null; then
     vis=$(gh repo view --json visibility -q .visibility 2>/dev/null)
     case "$vis" in
       PRIVATE) echo "✓ 비공개(private) — 남이 볼 수 없습니다" ;;
-      PUBLIC)  echo "🚨 공개(public)입니다! 여기 쌓이는 대화·통화 내용을 누구나 볼 수 있습니다" ;;
+      PUBLIC)  echo "공개(public) 원격입니다 — 배포 원본인지 업무 백업 원격인지 아래에서 구분합니다" ;;
       *)       echo "⚠️ 공개 여부를 확인하지 못했습니다 (gh 로그인 필요) — 수동 확인으로" ;;
     esac
   else
@@ -223,7 +225,7 @@ fi
 
 결과에 따라:
 
-- **공개(public)면 여기서 멈춘다.** 비공개로 바꾼 뒤에만 다음 단계로 간다. 바꾸는 법: GitHub 저장소 페이지 → Settings → 맨 아래 Danger Zone → "Change visibility" → Private.
+- **공개(public)면 origin의 용도를 확인한다.** `Rhim80/kakaobank-workspace`에서 배포 킷을 복제한 경우, 참가자의 업무 백업 저장소가 아니다. 공개 킷은 그대로 두고 로컬 세팅을 이어가며 이 원격으로 업무 자료를 push하지 않는다. 개인 백업이 필요하면 회사가 허용한 저장 위치를 본인이 정한다. 그 밖에 본인의 업무 자료를 올리는 공개 원격이면 외부 업로드를 멈추고 저장 위치를 확인한다. clone만으로 로컬 변경이 원격에 자동 업로드되는 것은 아니다.
 - **비공개면** 한 문장 알려주고 넘어간다: "비공개라 남이 볼 수는 없지만, 내 GitHub 계정이 뚫리면 여기 쌓인 대화도 함께 노출됩니다. 계정에 2단계 인증을 켜두세요."
 - **원격이 없으면** 사본이 한 벌뿐임을 알려준다: "이 컴퓨터가 고장 나면 되찾을 수 없습니다. 백업(비공개 원격 또는 주기적 외장 복사)을 권합니다."
 
@@ -240,7 +242,8 @@ Yes면 `daily-note` 스킬 호출.
 다음에 해볼 것 (이름을 외울 필요 없이 그냥 말하면 됩니다):
 1. "오늘 daily note 만들어줘" → 매일의 기록 시작
 2. "할 일 추가해줘: XXX" → 첫 할 일
-3. "새 프로젝트 시작" → 목적에서 완료까지 7단계로 밀어줍니다
+3. "배선도 그려줘" → 사전 업무파악 응답으로 내 업무 배선을 만들고, "아침 시작하자"로 이어갑니다
+4. "새 프로젝트 시작" → 목적에서 완료까지 7단계로 밀어줍니다
 
 CLAUDE.md에 Claude가 지킬 규칙이 적혀 있습니다. 그중 "항상 이렇게 해줘" 절은
 비어 있는데, 여기가 이 워크스페이스가 당신 것이 되는 자리입니다 —
@@ -260,7 +263,7 @@ CLAUDE.md에 Claude가 지킬 규칙이 적혀 있습니다. 그중 "항상 이�
 - **프로필은 쓰이는 곳이 있는 항목만 묻는다.** 답이 Claude의 행동을 안 바꾸는 항목(취미·관심사류)은 세팅을 길게 만들 뿐이다.
 - **Python은 확인만**. 없으면 설치 안내만 하고 넘어간다 — 카톡 읽기(윈도우)를 안 쓸 사람도 있음.
 - **선택 도구(git/gws)는 상태만 체크**. 자동 설치·인증은 안 함 (교육 과정에서 별도 안내되는 영역).
-- **저장 위치는 숨기지 않는다**. 원격이 공개(public)면 세팅을 멈추고 비공개 전환부터. 대화 원문이 어디로 가는지 사용자가 모른 채 넘어가게 하지 않는다.
+- **저장 위치는 숨기지 않는다**. 배포 원본과 업무 백업 원격을 구분한다(5-1). 저장소 공개 여부를 자동 변경하거나 업무 자료를 승인 없이 push하지 않는다.
 - **재실행 안전**. 이미 세팅된 항목은 스킵.
 
 ## CLAUDE.md와의 대응

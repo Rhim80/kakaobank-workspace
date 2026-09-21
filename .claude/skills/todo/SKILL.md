@@ -9,75 +9,22 @@ allowed-tools:
   - Bash
 ---
 
-# todo - Quick Todo Capture
+# todo
 
-`./40-personal/46-todos/active-todos.md`에 빠르게 할 일을 추가.
+워크스페이스 루트의 `00-system/선언-표면.yaml`이 경로·형식의 원본이다. 아래 래퍼가 실행 가능한 Python 3.9 이상을 확인한다. YAML 모듈은 킷에 동봉되어 있어 패키지 설치는 없다. 선언 오류·실행 실패를 빈 목록으로 숨기지 않는다.
 
-## 사용 예시
+사용자 입력에서 내용·우선순위·프로젝트·기한·근거 원본을 구분한다. `[urgent]`/`[high]`는 high, `[low]`는 low, `[waiting]`는 waiting, 기본은 normal. 다른 대괄호는 프로젝트다. 실제 섹션 이름은 YAML의 `할일.새항목라우팅`과 `할일.섹션`에서 읽는다.
 
-```
-할 일 추가: 세무사한테 4월 자료 보내기
-todo [urgent] 매장 전기점검 예약
-todo [website] 랜딩페이지 문구 수정
-```
-
-## 파싱 규칙
-
-1. **우선순위 태그** (맨 앞 `[...]` 형태):
-   - `[urgent]` 또는 `[high]` → high priority → `## 🔥 Today` 섹션
-   - `[low]` → low priority → `## 🔮 Someday` 섹션
-   - 그 외 `[태그]` → 프로젝트명으로 간주 → `## 📅 This Week` 섹션
-   - 없음 → normal → `## 📅 This Week` 섹션
-
-2. **프로젝트 태그** (우선순위 외 대괄호):
-   - 있으면 `project:` 필드에 저장
-
-## 추가 형식
-
-```markdown
-- [ ] [Todo 내용]
-  - added: YYYY-MM-DD HH:MM
-  - priority: [high/normal/low]
-  - project: [프로젝트명]  # 있을 때만
+```bash
+bash .claude/scripts/surfaces.sh todo validate
+bash .claude/scripts/surfaces.sh todo add '할 일 내용' --priority normal
 ```
 
-## 실행 단계
+필요한 경우 `--project '프로젝트' --source '워크스페이스 상대 원본 경로' --due 'YYYY-MM-DD'`를 더한다. 원본을 찾지 못했으면 경로를 꾸며 넣지 말고 사용자에게 알린다. 사용자 문자열은 셸 인자가 되므로 안전하게 인용한다.
 
-1. 입력 파싱 (우선순위, 프로젝트, 내용)
-2. 현재 시각 확인: `date +"%Y-%m-%d %H:%M"`
-3. `./40-personal/46-todos/active-todos.md` 읽기
-4. 우선순위에 맞는 섹션에 **맨 아래** 추가 (`Edit` 도구)
-5. 저장
-6. 결과 출력:
+- 배선도에서 받은 자료는 반드시 `--key 'wiring:자료id:항목번호'`를 전달한다. 스크립트가 원본 링크·할 일 id·반영 표식을 함께 저장한다. 재실행과 완료 보관 후 재시도 모두 같은 키로 한다.
+- 기존 항목이 반환되면 새로 추가했다고 하지 않는다. 이미 완료된 항목을 다시 열지 않는다. 반복 업무의 새 회차라면 날짜 등을 포함한 별도 `--key`를 쓴다.
+- 파일이나 섹션이 없어도 기존 내용을 덮어쓰지 않는다. 추가·중복 판정은 스크립트에 맡긴다.
+- 출력의 added/id/section 또는 location/done을 바탕으로 한 줄 보고한다.
 
-```
-✅ Todo 추가됨: [내용]
-   섹션: 🔥 Today | 📅 This Week | 🔮 Someday
-   우선순위: high | normal | low
-   프로젝트: [프로젝트명]  (있을 때만)
-```
-
-## 파일 초기 구조
-
-파일이 없거나 섹션이 없으면 이 구조로 초기화:
-
-```markdown
-# Active Todos
-
-## 🔥 Today
-
-## 📅 This Week
-
-## 🔮 Someday
-
-## 📥 Inbox
-```
-
-## 참고
-
-- 이 스킬은 **로컬 파일에만 저장**합니다. 외부 서비스(Google Tasks 등) 동기화는 별도 스킬로.
-- 완료된 todo는 `todos` 스킬의 auto-cleanup으로 `completed-todos.md`로 이동.
-
----
-
-Made by Do Better Things
+로컬 할 일만 관리한다. 글로벌 PKM의 업무별 분류·Google Tasks 동기화는 포함하지 않는다. 완료·조회는 `todos`가 맡는다.

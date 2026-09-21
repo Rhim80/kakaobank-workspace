@@ -10,82 +10,15 @@ allowed-tools:
 
 # daily-review
 
-어제~오늘의 git 변경사항과 daily note, todos를 종합하여 오늘 우선순위를 제안.
-
-**전제**: 오늘 daily note가 존재해야 함. 없으면 "먼저 daily-note 스킬로 생성해주세요" 안내.
-
-## 수행 작업
-
-### 1. Git 변경사항 분석
+워크스페이스 루트의 `00-system/선언-표면.yaml`이 경로·형식의 원본이다. 아래 래퍼가 실행 가능한 Python 3.9 이상을 확인한다. YAML 모듈은 킷에 동봉되어 있어 패키지 설치는 없다. 선언 오류·실행 실패를 빈 목록으로 숨기지 않는다.
 
 ```bash
-# 워크스페이스 루트가 git repo인지 확인
-if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1; then
-  # 어제 이후 변경된 파일
-  git log --since="yesterday" --name-only --pretty=format: | sort -u | grep -v '^$'
-else
-  echo "git repo가 아님. daily note + todos만 분석합니다."
-fi
+bash .claude/scripts/surfaces.sh resolve
+bash .claude/scripts/surfaces.sh todo list --mode all
 ```
 
-변경된 파일을 **최상위 카테고리별로 그룹화**:
-- `10-projects/` 하위 변경사항
-- `20-operations/` 하위 변경사항
-- `30-knowledge/` 하위 변경사항
-- `40-personal/` 하위 변경사항 (daily, todos 등)
-- `.claude/` 설정 변경
+resolve의 오늘 노트를 읽는다. 없으면 생성했다고 하지 말고 기존 기록·할 일 기준으로 리뷰하며 daily-note를 안내한다. git 저장소면 어제~오늘 git log에 status/diff의 미커밋 변경도 합쳐 실제 변경 파일을 읽는다. 저장소가 아니면 노트와 할 일만 분석한다.
 
-카테고리별로 어떤 폴더/파일이 움직였는지 요약.
+우선순위는 선언의 오늘/이번주 섹션, 기한, 업무 원본을 대조해 최대 3개 제안한다. 원본이 missing/review/unverified인 할 일은 먼저 실제 근거를 확인하며 오래됐다는 이유만으로 올리지 않는다. 진행은 선언의 `진행.루트`와 배선도 줄기 기록을 함께 본다.
 
-### 2. 오늘 우선순위 제안
-
-**읽을 파일**:
-
-```bash
-TODAY=$(date +%Y-%m-%d)
-MONTH=$(date +%Y-%m)
-
-# 오늘 daily note
-cat "./40-personal/41-daily/$MONTH/$TODAY.md"
-
-# active todos
-cat "./40-personal/46-todos/active-todos.md"
-```
-
-**분석 기반**:
-- 어제 git 변경에서 이어질 작업
-- daily note에 이미 적힌 일정/계획
-- active-todos의 Today/This Week 항목
-- 프로젝트 마감일 (있으면)
-
-### 3. 출력 형식
-
-```markdown
-## Git 변경사항 (어제~오늘)
-
-### 10-projects/
-- [변경된 프로젝트 폴더명]: [요약]
-
-### 30-knowledge/
-- [변경된 파일]: [요약]
-
-## 오늘 우선순위 제안
-
-1. [우선순위 1] — 근거
-2. [우선순위 2] — 근거
-3. [우선순위 3] — 근거
-
-## 인사이트
-- [패턴]
-- [이어갈 작업]
-```
-
-## 원칙
-
-- 하드코딩된 프로젝트 이름 사용 금지. **실제 변경된 폴더명으로 그룹핑**.
-- 3개 이하 우선순위만 제안. 그 이상이면 사용자가 부담됨.
-- 근거를 항상 명시 (왜 이게 우선인가).
-
----
-
-Made by Do Better Things
+변경 요약·우선순위와 근거·이어갈 일을 짧게 보고한다. 이 스킬은 읽기 전용이다. 파일 생성·완료 이동·외부 변경을 하지 않는다.

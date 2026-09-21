@@ -1,7 +1,7 @@
 ---
 name: wiki-ingest
 description: |
-  소스를 분석하여 30-knowledge/00-wiki 토픽 페이지를 자동 enrichment. 지식을 복리로 축적.
+  소스를 분석하여 선언된 위키 토픽 페이지를 자동 enrichment. 지식을 복리로 축적.
   단순 추가가 아니라: 기존 페이지 통합, 핵심 요약 갱신, 교차 참조 강화, 모순 감지.
   "wiki-ingest", "위키 업데이트", "위키에 반영", "wiki update", "지식 축적" 등을 언급하면 자동 실행.
 allowed-tools:
@@ -14,10 +14,12 @@ allowed-tools:
   - WebFetch
   - AskUserQuestion
 ---
+먼저 `00-system/선언-표면.yaml`을 Read하고 `위키.위치`를 워크스페이스 상대 경로 `WIKI_PATH`로 사용한다. 선언이 없거나 경로가 범위 밖이면 중단한다. 옛 기본 경로로 대신 실행하지 않는다. 아래 셸 예시는 그 값을 안전하게 인용해 WIKI_PATH에 지정한 뒤 실행한다. 위키를 옮겼다면 SCHEMA·index·log와 기존 출처/링크도 함께 대조한다.
+
 
 # Wiki Ingest
 
-소스를 분석하여 `./30-knowledge/00-wiki/` 토픽 페이지에 지식을 **복리로 축적**.
+소스를 분석하여 `선언의 위키 위치` 토픽 페이지에 지식을 **복리로 축적**.
 
 **복리 = 단순 축적이 아닌 통합.** 새 소스가 들어오면:
 - 기존 페이지의 근거가 두꺼워지고
@@ -30,10 +32,10 @@ allowed-tools:
 ## 동작 방식
 
 ```
-WIKI_PATH = ./30-knowledge/00-wiki
+WIKI_PATH = 00-system/선언-표면.yaml의 위키.위치
 ```
 
-먼저 `30-knowledge/00-wiki/SCHEMA.md`를 읽는다. 페이지·출처·갱신일·index·log 형식의 원본은 SCHEMA다.
+먼저 `위키.위치/SCHEMA.md`를 읽는다. 페이지·출처·갱신일·index·log 형식의 원본은 SCHEMA다.
 
 ### Input 확인
 

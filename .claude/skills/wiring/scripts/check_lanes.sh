@@ -31,7 +31,19 @@ else
 fi
 echo
 echo "## 프로젝트 .mcp.json"
-if [ -f .mcp.json ]; then sed 's/^/    /' .mcp.json; else echo "(없음)"; fi
+if [ -f .mcp.json ] && [ -n "$PY" ]; then
+  "$PY" - <<'MCP_NAMES'
+import json
+try:
+    with open('.mcp.json', encoding='utf-8') as f:
+        servers = json.load(f).get('mcpServers', {})
+    print('등록 서버: ' + ', '.join(servers))
+    print('(설정값·인증값은 출력하지 않음)')
+except (ValueError, OSError, TypeError):
+    print('(설정을 읽지 못함 — 원문은 인증값 보호를 위해 출력하지 않음)')
+MCP_NAMES
+elif [ -f .mcp.json ]; then echo "(Python 없음 — 설정 원문은 출력하지 않음)"
+else echo "(없음)"; fi
 echo
 echo "## 이 폴더에서는 안 켜지는 MCP (다른 폴더·다른 도구에 등록된 것)"
 # claude mcp list 는 '모든 폴더 공통(user)' + '이 폴더' 등록만 보여준다.
