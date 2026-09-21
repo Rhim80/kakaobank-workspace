@@ -146,6 +146,7 @@ Last enriched: [오늘 날짜]
 - 페이지 유형: concept / entity / synthesis
 - **한 줄 설명은 완전한 문장 1개, 70자 이내**. 키워드 덤프 금지
 - 본문과 같은 enriched 날짜를 반영한다. sources 열은 만들지 않는다. `wiki_check.py --index` 후보와 대조하되 유형·설명·분류를 보존한다.
+- index 내용을 바꿨으면 footer의 Last updated를 작업일로 갱신한다. 중복 생략으로 index를 안 바꿨으면 유지한다.
 - 허브 블록 재계산 (indegree 변동 시)
 
 ### Step 6: log.md 기록
