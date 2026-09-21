@@ -113,6 +113,9 @@ kakaobank-workspace/
 
 상세: `30-knowledge/00-wiki/SCHEMA.md`
 
+위키는 같은 근거를 다시 넣지 않고, 같은 출처의 새 근거는 통합합니다. 출처·갱신일·기록 형식은 `30-knowledge/00-wiki/SCHEMA.md`, 읽기 전용 검사 명령은 `.claude/skills/wiki-lint/SKILL.md`를 따릅니다. 검사에는 Python 3.9 이상만 필요합니다. 의미와 사실값은 원문 대조로 따로 점검합니다.
+
+
 ## Credits
 
 - [Claudesidian](https://github.com/heyitsnoah/claudesidian) by Noah Brier — PKM 아이디어 원형

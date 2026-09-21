@@ -16,9 +16,31 @@ allowed-tools:
 
 `./30-knowledge/00-wiki/` 토픽 페이지의 헬스체크.
 
+## 기계 검사 실행
+
+먼저 대상 워크스페이스의 `CLAUDE.md`와 `30-knowledge/00-wiki/SCHEMA.md`를 읽는다. 대상 루트에서 다음을 실행한다(Mac·Linux·Windows Git Bash). 추가 패키지나 venv는 필요 없다.
+
+```bash
+WIKI_PY=""
+for c in python3 python py; do
+  if "$c" -c 'import sys; assert sys.version_info >= (3, 9)' 2>/dev/null; then WIKI_PY="$c"; break; fi
+done
+if [ -z "$WIKI_PY" ]; then
+  echo "Python 3.9 이상이 필요합니다. setup-workspace의 Python 설치 안내를 따르세요."
+else
+  "$WIKI_PY" .claude/skills/wiki-lint/scripts/wiki_check.py --root "$PWD" --json
+fi
+```
+
+변경분은 같은 명령에 `--files 토픽A.md 토픽B.md`를 추가한다. 다른 폴더/글로벌에 설치한 스킬에서 실행할 때는 검사기의 실제 경로와 `--root "대상 워크스페이스 절대경로"`를 함께 지정한다. 루트를 생략하면 스크립트가 설치된 워크스페이스를 검사하며 홈이나 다른 PKM을 찾지 않는다.
+
+종료 코드 0은 구조 오류 없음(경고는 남을 수 있음), 1은 구조 오류, 2는 실행 실패다. Python이 없거나 실행이 실패했으면 통과로 보고하지 않는다. `--index`는 index 수정 후보 출력만 하며 원본 파일로 직접 리다이렉트하지 않는다.
+
 ## 동작 방식
 
-### Step 1: 전체 토픽 페이지 수집
+### Step 1: 전체 기계 검사 후 토픽 페이지 수집
+
+위 명령으로 전체 검사를 실행하고 출력의 root·scope·files_read와 오류/경고를 기록한다. 아래 A~M 중 기계로 잡히는 항목은 출력에서 가져오고, 의미·역방향 링크·허브·log는 원문을 읽어 별도로 판단한다.
 
 ```
 WIKI_PATH = ./30-knowledge/00-wiki
@@ -65,7 +87,7 @@ WIKI_PATH = ./30-knowledge/00-wiki
 - **조치**: 새 토픽 페이지 생성 제안
 
 #### G. 비대한 페이지 (Oversized Pages)
-- 특정 섹션이 전체의 50% 이상 또는 하위 항목 10개 이상
+- SCHEMA 「기계 검사 기준」의 근거 크기 경고를 확인하고 분리 필요성은 내용으로 판단
 - **조치**: 독립 토픽으로 분리 제안
 
 #### H. 데이터 갭 (Data Gaps)
@@ -91,7 +113,7 @@ WIKI_PATH = ./30-knowledge/00-wiki
 - **조치**: `## 핵심` 첫 문장 기반 재작성 제안
 
 #### L. Facets 비대/중복
-- Infobox Facets 70자 초과
+- Infobox Facets가 SCHEMA 권장 상한 초과
 - Facets 키워드가 `## 근거`에서 더 이상 언급 안 됨
 - **조치**: 약한 키워드 제거 제안
 
@@ -125,7 +147,8 @@ WIKI_PATH = ./30-knowledge/00-wiki
 
 - AskUserQuestion으로 수정할 항목 확인
 - 승인된 항목만 Edit (index.md, Related 등)
-- 수정 내용 log.md에 기록:
+- 수정 뒤 같은 범위의 기계 검사를 다시 실행한다. 지식 보강이 없는 정리는 Last enriched를 올리지 않는다.
+- 수정 내용과 검사 결과를 SCHEMA log 규약에 따라 기록:
   ```
   ## [YYYY-MM-DD] lint | Wiki Health Check
   - 고아 페이지 N개 → index.md에 추가
