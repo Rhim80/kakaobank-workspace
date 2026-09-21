@@ -101,8 +101,6 @@
 
 `.claude/skills/`에 스킬이 있습니다. 이름을 외울 필요 없이 한국어로 말하면 걸립니다 ("오늘 노트 만들어줘" → `daily-note`). 목록은 `.claude/skills/README.md`.
 
-Python을 쓰는 스킬은 먼저 `source .claude/venv.sh` (Mac·윈도우 Git Bash 공통).
-
 `.claude/agents/`에는 오래 걸리는 일을 따로 맡길 수 있는 일꾼이 있습니다(조사·분석·글쓰기·점검). Claude가 알아서 맡기기도 하고, "research-worker로 조사해줘"처럼 지목할 수도 있습니다.
 
 ---
@@ -118,7 +116,7 @@ Python을 쓰는 스킬은 먼저 `source .claude/venv.sh` (Mac·윈도우 Git B
 | 항상 이렇게 해줘 | 비워둔다. 마지막 단계가 존재만 알린다 |
 | 어디에 저장하나 | 1단 시드 체크가 이 경로들을 검사 |
 | 지식은 위키에 | 1단 시드 체크 (SCHEMA·index·log) |
-| 스킬 | 4·5단 (venv·선택 도구) |
+| 스킬 | 4·5단 (Python 확인·선택 도구) |
 
 ---
 

@@ -37,7 +37,7 @@ Claude에게:
 `setup-workspace` 스킬이 대화형으로 다음을 진행합니다:
 
 1. **프로필 작성** — CLAUDE.md의 "내 프로필" 섹션을 4개 질문으로 채움
-2. **Python 환경** — 데이터 스킬(csv-clean, excel-to-csv, pdf-to-md)용 `.venv` 생성 + 패키지 설치 (원할 때만)
+2. **Python 확인** — 카톡 읽기(윈도우)·배선 검사에 쓰는 파이썬 3이 있는지만 확인 (설치할 패키지 없음)
 3. **선택 도구 체크** — `git`, `gws` (Google Workspace CLI) 설치 상태 확인 및 안내
 4. **첫 Daily Note** — 오늘의 기록 시작
 
@@ -56,11 +56,6 @@ Claude에게:
 ```
 
 **처음이라면 → [`00-system/03-guides/do-better-drive-사용법.md`](00-system/03-guides/do-better-drive-사용법.md)** — 프로젝트를 목적→완료까지 미는 7단계를, 클로드코드가 처음인 분 기준으로 예시와 함께 설명합니다.
-
-Python 스킬을 쓸 때는 가상환경 활성화 (Mac·윈도우 Git Bash 공통):
-```bash
-source .claude/venv.sh
-```
 
 ## Philosophy
 

@@ -12,13 +12,13 @@ echo
 LANES=.claude/skills/wiring/scripts/check_lanes.sh
 if [ -f "$LANES" ]; then bash "$LANES"; else echo "## 연결 상태"; echo "(check_lanes.sh 없음 — wiring 스킬이 빠진 워크스페이스. 이 절은 돌지 않았다)"; fi
 echo
-echo "## 파이썬 가상환경 만들 수 있나 (데이터 스킬용)"
+echo "## 파이썬 (카톡 읽기·배선 검사용)"
 PYPICK=.claude/skills/wiring/scripts/pick_python.sh   # 파이썬 판정 원본
 if [ ! -f "$PYPICK" ]; then echo "(pick_python.sh 없음 — 이 검사는 돌지 않았다)"
 else
   . "$PYPICK"
-  if [ -n "$PY" ]; then echo "- 파이썬: $PY ($PY_VER)"; "$PY" -c "import venv, ensurepip; print('- venv·ensurepip: 있음')" 2>&1 || echo "- venv·ensurepip: 없음(위 에러 참고 — setup-workspace의 .venv 단계가 막힌다)"
-  else echo "- 실행되는 파이썬 없음 (python3·python·py 모두 안 돈다 — setup-workspace의 .venv 단계가 막힌다)"; fi
+  if [ -n "$PY" ]; then echo "- 파이썬: $PY ($PY_VER)"
+  else echo "- 실행되는 파이썬 없음 (python3·python·py 모두 안 돈다 — 카톡 읽기(윈도우)·배선 검사 스크립트가 막힌다)"; fi
 fi
 echo
 echo "## 바깥 접근 (사내 망에서 나가는 길 — 각 5초 제한)"

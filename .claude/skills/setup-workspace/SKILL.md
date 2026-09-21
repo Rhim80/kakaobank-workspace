@@ -1,6 +1,6 @@
 ---
 name: setup-workspace
-description: 워크스페이스를 처음 받은 뒤의 초기 설정. CLAUDE.md 프로필 작성 + Python venv 세팅 + 선택 도구(gws/git) 안내 + 첫 daily note 생성까지 한번에 진행. "워크스페이스 세팅", "초기 설정", "setup", "setup-workspace" 등을 언급하면 자동 실행.
+description: 워크스페이스를 처음 받은 뒤의 초기 설정. CLAUDE.md 프로필 작성 + Python 확인 + 선택 도구(gws/git) 안내 + 첫 daily note 생성까지 한번에 진행. "워크스페이스 세팅", "초기 설정", "setup", "setup-workspace" 등을 언급하면 자동 실행.
 allowed-tools:
   - Read
   - Write
@@ -11,7 +11,7 @@ allowed-tools:
 # setup-workspace
 
 워크스페이스를 처음 받은(압축을 푼) 사용자를 위한 초기 설정 스킬.
-핵심 단계: **루트 확인 → 프로필 → Python 환경 → 선택 도구 → 저장 위치 확인 → 첫 Daily Note**.
+핵심 단계: **루트 확인 → 프로필 → Python 확인 → 선택 도구 → 저장 위치 확인 → 첫 Daily Note**.
 
 ## 수행 작업
 
@@ -116,9 +116,9 @@ _작성일: YYYY-MM-DD_
 
 **"판단 성향" 줄은 지우지 않는다.** 세팅에서 묻지 않는 항목이지만 `do-better-drive`가 이 줄을 읽는다. 섹션을 통째로 바꾸면서 이 줄을 빠뜨리면, 나중에 사용자가 채워 넣을 자리 자체가 사라진다.
 
-### 4. Python 환경 세팅 (신규)
+### 4. Python 확인
 
-**왜 필요한가**: `csv-clean`, `excel-to-csv`, `pdf-to-md` 세 스킬이 Python 스크립트를 사용함. 나중에 갑자기 에러 나는 것보다 처음에 한 번에 세팅하는 게 편하다.
+**왜 필요한가**: `kakao-read`(윈도우)와 `wiring`의 검사 스크립트가 파이썬을 부른다. 둘 다 표준 라이브러리만 쓰므로 **가상환경(venv)이나 패키지 설치는 하지 않는다** — 파이썬 3이 실행되는지만 본다.
 
 **4-1. Python 설치 확인**:
 
@@ -147,51 +147,6 @@ done
 ```
 
 설치 뒤 다시 4-1을 돌려 `PYBOOT`가 잡히는지 확인하고 진행한다.
-
-**4-2. venv 세팅 제안**:
-
-```
-데이터 처리 스킬(csv-clean, excel-to-csv, pdf-to-md)을 쓰려면 Python 패키지 3개가 필요합니다.
-워크스페이스 전용 가상환경(.venv)을 지금 만들까요? (Y/n)
-(이 셋 말고도 자기 패키지를 따로 쓰는 스킬이 있습니다 — 그건 그 스킬을 처음 쓸 때
- 해당 SKILL.md의 설치 안내대로 깝니다. 목록은 `.claude/skills/README.md`의 「설치가 필요한 스킬」)
-```
-
-Yes (기본)면:
-
-```bash
-# 이미 .venv 있으면 스킵 (PYBOOT은 4-1에서 잡은 이름)
-if [ ! -d .venv ]; then
-  "$PYBOOT" -m venv .venv
-fi
-
-source .claude/venv.sh
-python -m pip install --upgrade pip --quiet
-python -m pip install -r .claude/skills/csv-clean/scripts/requirements.txt -r .claude/skills/excel-to-csv/scripts/requirements.txt -r .claude/skills/pdf-to-md/scripts/requirements.txt
-```
-
-설치 완료 후 확인:
-```bash
-source .claude/venv.sh && python -c "import pandas, openpyxl, pymupdf4llm; print('OK: pandas', pandas.__version__, '| openpyxl', openpyxl.__version__, '| pymupdf4llm imported')"
-```
-
-**안내 출력**:
-```
-✓ .venv/ 생성 및 패키지 설치 완료
-
-**사용법**: 새 터미널을 열 때마다 가상환경 활성화:
-  source .claude/venv.sh
-
-이 한 줄이 Mac·Linux·윈도우(Git Bash)에서 모두 됩니다.
-가상환경 폴더 이름이 OS마다 다른 것(bin / Scripts)을 이 파일이 대신 처리합니다.
-활성화한 뒤에는 python3 가 아니라 **python** 으로 부르세요 — 윈도우 가상환경에는
-python3 라는 이름이 없습니다.
-
-Claude Code가 Python 스크립트를 호출할 때 자동으로 이 venv를 쓰려면 매 세션 시작 시
-위 명령을 한 번 실행하거나, 셸 시작 시 자동 활성화 스크립트를 설정하세요.
-```
-
-No면 "나중에 필요할 때 다시 이 스킬을 호출하거나 직접 `python -m pip install`로 설치하세요" 안내 후 다음 단계.
 
 ### 5. 선택 도구 안내 (설치 강제 X)
 
@@ -301,7 +256,7 @@ CLAUDE.md에 Claude가 지킬 규칙이 적혀 있습니다. 그중 "항상 이�
 - **CLAUDE.md 덮어쓰기 금지**. `profile:start`~`profile:end` 마커 사이만 `Edit`로 바꾼다. **절 제목으로 찾지 않는다** — 제목이 바뀌면 못 찾고 새로 만들어 중복시킨다.
 - **이미 채워져 있으면** 덮어쓰기 전 사용자에게 확인.
 - **프로필은 쓰이는 곳이 있는 항목만 묻는다.** 답이 Claude의 행동을 안 바꾸는 항목(취미·관심사류)은 세팅을 길게 만들 뿐이다.
-- **Python 환경은 권장, 강제 X**. 데이터 스킬 안 쓸 사람도 있음.
+- **Python은 확인만**. 없으면 설치 안내만 하고 넘어간다 — 카톡 읽기(윈도우)를 안 쓸 사람도 있음.
 - **선택 도구(git/gws)는 상태만 체크**. 자동 설치·인증은 안 함 (교육 과정에서 별도 안내되는 영역).
 - **저장 위치는 숨기지 않는다**. 원격이 공개(public)면 세팅을 멈추고 비공개 전환부터. 대화 원문이 어디로 가는지 사용자가 모른 채 넘어가게 하지 않는다.
 - **재실행 안전**. 이미 세팅된 항목은 스킵.
@@ -317,7 +272,7 @@ CLAUDE.md에 Claude가 지킬 규칙이 적혀 있습니다. 그중 "항상 이�
 | 항상 이렇게 해줘 | 비워둔다. 7단이 존재만 알린다 |
 | 어디에 저장하나 | 1단 시드 체크가 이 경로들을 검사 |
 | 지식은 위키에 | 1단 시드 체크 (SCHEMA·index·log) |
-| 스킬 | 4·5단 (venv·선택 도구) |
+| 스킬 | 4·5단 (Python 확인·선택 도구) |
 
 ---
 
